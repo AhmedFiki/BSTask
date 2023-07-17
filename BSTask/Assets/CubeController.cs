@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class CubeController : MonoBehaviour
 {
 
-    public CubeController Instance { get; private set; }
+    private static CubeController _instance;
+
+    public static CubeController Instance
+    {
+        get { return _instance; }
+    }
 
     public float moveDistance = 1f;
     public float rotationAngle = 90f;
@@ -16,8 +22,14 @@ public class CubeController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
