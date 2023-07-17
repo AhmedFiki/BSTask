@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    public Action action;
     public Vector3 startPosition;
     public Transform currentParent;
 
@@ -49,9 +50,10 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         else
         {
             Debug.Log("Dropped outside Start");
+
             if(inside)
             {
-                StartBlock.Instance.RemoveAction();
+                StartBlock.Instance.RemoveAction(transform);
 
             }
 
@@ -70,3 +72,4 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     }
 }
+
