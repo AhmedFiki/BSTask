@@ -3,28 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class CubeController : MonoBehaviour
 {
 
-    public static CubeController Instance
-    ;
+    public static CubeController Instance;
 
     public float moveDistance = 1f;
     public float rotationAngle = 90f;
     public float tweenDuration = 0.3f;
-    private Vector3 originalPosition;
+
     public bool isRotating = false;
-
+    Vector3 originalPosition;
     int index = 0;
-    bool active = false;
-
     List<Action> actions = new List<Action>();
+
+    public Button startButton;
 
     private void Awake()
     {
-
-
         Instance = this;
     }
 
@@ -32,19 +30,7 @@ public class CubeController : MonoBehaviour
     {
         originalPosition = transform.position;
 
-        /*
-        List<Action> list = new List<Action>();
-        list.Add(Action.Forward);
-        list.Add(Action.Backward);
-        list.Add(Action.Rotate);
-        list.Add(Action.Backward);
-        list.Add(Action.Forward);
-
-        StartSequence(list);
-        */
     }
-
-
 
     public void Forward()
     {
@@ -62,10 +48,8 @@ public class CubeController : MonoBehaviour
 
     public void Rotate()
     {
-        
-            isRotating = true;
-            transform.DORotate(new Vector3(0f, transform.eulerAngles.y + rotationAngle, 0f), tweenDuration).OnComplete(() => NextAction());
-        
+        isRotating = true;
+        transform.DORotate(new Vector3(0f, transform.eulerAngles.y + rotationAngle, 0f), tweenDuration).OnComplete(() => NextAction());
 
     }
 
@@ -76,16 +60,14 @@ public class CubeController : MonoBehaviour
 
     }
 
-    public void StartSequence(List<Action> a)
+    public void StartSequence(List<Action> p_action)
     {
-        //actions.Clear();
-        actions = a;
+        actions = p_action;
         index = 0;
-        Debug.Log(a.Count + " " + actions.Count + " " + index);
-        if(actions.Count > 0)
+        if (actions.Count > 0)
         {
             DoAction(actions[index]);
-
+            startButton.interactable = false;
         }
 
     }
@@ -100,8 +82,8 @@ public class CubeController : MonoBehaviour
         else
         {
             Debug.Log("Done Sequence");
+            startButton.interactable = true;
         }
-
     }
 
     public void DoAction(Action action)
@@ -123,6 +105,5 @@ public class CubeController : MonoBehaviour
 
         }
     }
-
 
 }
