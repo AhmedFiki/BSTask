@@ -7,12 +7,9 @@ using UnityEngine;
 public class StartBlock : MonoBehaviour
 {
 
-    private static StartBlock _instance;
 
     public static StartBlock Instance
-    {
-        get { return _instance; }
-    }
+    ;
 
     public GameObject dropArea;
     public GameObject puzzlePanel;
@@ -20,13 +17,9 @@ public class StartBlock : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+     
 
-        _instance = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -63,7 +56,11 @@ public class StartBlock : MonoBehaviour
 
     public void ResetActions()
     {
+        RectTransform rect = GetComponent<RectTransform>();
+
         actions.Clear();
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, 80);
+
         DeleteChildren(dropArea.transform);
     }
      void DeleteChildren(Transform parent)

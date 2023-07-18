@@ -7,12 +7,8 @@ using Unity.VisualScripting;
 public class CubeController : MonoBehaviour
 {
 
-    private static CubeController _instance;
-
     public static CubeController Instance
-    {
-        get { return _instance; }
-    }
+    ;
 
     public float moveDistance = 1f;
     public float rotationAngle = 90f;
@@ -27,14 +23,9 @@ public class CubeController : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
 
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
+
+        Instance = this;
     }
 
     private void Start()
@@ -71,11 +62,10 @@ public class CubeController : MonoBehaviour
 
     public void Rotate()
     {
-        if (!isRotating)
-        {
+        
             isRotating = true;
-            transform.DOLocalRotate(new Vector3(0f, transform.eulerAngles.y + rotationAngle, 0f), tweenDuration).OnComplete(() => isRotating = false).OnComplete(() => NextAction());
-        }
+            transform.DORotate(new Vector3(0f, transform.eulerAngles.y + rotationAngle, 0f), tweenDuration).OnComplete(() => NextAction());
+        
 
     }
 
@@ -91,8 +81,12 @@ public class CubeController : MonoBehaviour
         //actions.Clear();
         actions = a;
         index = 0;
-        Debug.Log(a.Count+" "+actions.Count+" "+index);
-        DoAction(actions[index]);
+        Debug.Log(a.Count + " " + actions.Count + " " + index);
+        if(actions.Count > 0)
+        {
+            DoAction(actions[index]);
+
+        }
 
     }
     public void NextAction()
